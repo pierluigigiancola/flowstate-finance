@@ -1,10 +1,11 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Tag, Layers, ArrowLeftRight } from "lucide-react";
+import { LayoutDashboard, Tag, Layers, ArrowLeftRight, Repeat } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { path: "/", label: "Dashboard", icon: LayoutDashboard },
   { path: "/transactions", label: "Transactions", icon: ArrowLeftRight },
+  { path: "/recurring", label: "Recurring", icon: Repeat },
   { path: "/categories", label: "Categories", icon: Tag },
   { path: "/macro-categories", label: "Macro", icon: Layers },
 ];

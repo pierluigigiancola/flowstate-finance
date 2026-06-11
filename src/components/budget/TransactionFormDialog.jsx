@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from "@/components/ui/select";
@@ -24,7 +23,6 @@ export default function TransactionFormDialog({
     amount: "",
     category_id: "",
     date: format(defaultDate, "yyyy-MM-dd"),
-    is_recurrent: false,
     note: "",
   });
 
@@ -34,7 +32,6 @@ export default function TransactionFormDialog({
         amount: String(transaction.amount),
         category_id: transaction.category_id || "",
         date: transaction.date || format(defaultDate, "yyyy-MM-dd"),
-        is_recurrent: transaction.is_recurrent || false,
         note: transaction.note || "",
       });
     } else {
@@ -42,7 +39,6 @@ export default function TransactionFormDialog({
         amount: "",
         category_id: "",
         date: format(new Date(currentYear, currentMonth - 1, new Date().getDate()), "yyyy-MM-dd"),
-        is_recurrent: false,
         note: "",
       });
     }
@@ -50,16 +46,10 @@ export default function TransactionFormDialog({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const d = form.date ? parseISO(form.date) : null;
     onSubmit({
       amount: parseFloat(form.amount),
       category_id: form.category_id,
       date: form.date || undefined,
-      // keep month/year derived from the chosen date for filtering
-      month: d ? d.getMonth() + 1 : currentMonth,
-      year: d ? d.getFullYear() : currentYear,
-      day: d ? d.getDate() : undefined,
-      is_recurrent: form.is_recurrent,
       note: form.note || undefined,
     });
   };
@@ -120,38 +110,24 @@ export default function TransactionFormDialog({
             </Select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start font-normal text-left">
-                    <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    {selectedDate ? format(selectedDate, "dd MMM yyyy") : <span className="text-muted-foreground">Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={(d) => d && setForm({ ...form, date: format(d, "yyyy-MM-dd") })}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="space-y-2">
-              <Label>Recurrent</Label>
-              <div className="flex items-center gap-2 h-10">
-                <Switch
-                  checked={form.is_recurrent}
-                  onCheckedChange={(v) => setForm({ ...form, is_recurrent: v })}
+          <div className="space-y-2">
+            <Label>Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-start font-normal text-left">
+                  <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                  {selectedDate ? format(selectedDate, "dd MMM yyyy") : <span className="text-muted-foreground">Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(d) => d && setForm({ ...form, date: format(d, "yyyy-MM-dd") })}
+                  initialFocus
                 />
-                <span className="text-sm text-muted-foreground">
-                  {form.is_recurrent ? "Monthly" : "One-time"}
-                </span>
-              </div>
-            </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="space-y-2">

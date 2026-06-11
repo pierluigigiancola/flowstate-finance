@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/api/supabaseClient";
 import { useAuth } from "@/lib/AuthContext";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import MonthSelector from "@/components/budget/MonthSelector";
 import TransactionItem from "@/components/budget/TransactionItem";
 import TransactionFormDialog from "@/components/budget/TransactionFormDialog";
 import DeleteConfirmDialog from "@/components/budget/DeleteConfirmDialog";
+import { generateRecurringTransactions } from "@/utils/recurringGenerator";
 
 export default function Transactions() {
   const now = new Date();
@@ -21,6 +22,14 @@ export default function Transactions() {
   const { user } = useAuth();
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (user?.id) {
+      generateRecurringTransactions(user.id).then(() => {
+        invalidate();
+      });
+    }
+  }, [user?.id, month, year]);
 
   const { data: transactions = [] } = useQuery({
     queryKey: ["transactions", month, year],

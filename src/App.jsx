@@ -12,6 +12,7 @@ import ResetPassword from '@/pages/ResetPassword';
 import AppLayout from '@/components/layout/AppLayout';
 import Dashboard from '@/pages/Dashboard';
 import Transactions from '@/pages/Transactions';
+import RecurringTransactions from '@/pages/RecurringTransactions';
 import Categories from '@/pages/Categories';
 import MacroCategories from '@/pages/MacroCategories';
 
@@ -36,6 +37,7 @@ const AuthenticatedApp = () => {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/recurring" element={<RecurringTransactions />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/macro-categories" element={<MacroCategories />} />
         </Route>
