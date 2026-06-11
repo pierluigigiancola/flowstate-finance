@@ -1,9 +1,7 @@
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
 
 -- Table: MacroCategory
 create table public."MacroCategory" (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   name text not null,
   color text not null,
@@ -12,7 +10,7 @@ create table public."MacroCategory" (
 
 -- Table: Category
 create table public."Category" (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   name text not null,
   macro_category_id uuid not null references public."MacroCategory"(id) on delete cascade,
@@ -21,7 +19,7 @@ create table public."Category" (
 
 -- Table: Transaction
 create table public."Transaction" (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
   amount numeric not null,
   date date not null,
